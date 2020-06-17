@@ -71,8 +71,7 @@ class RepeaterService : Service(), CoroutineScope, WifiP2pManager.ChannelListene
             y > 2020 || y == 2020 && m >= 3
         }
         val safeModeConfigurable get() = Build.VERSION.SDK_INT >= 29 && hasP2pValidateName
-        val safeMode get() = Build.VERSION.SDK_INT >= 29 &&
-                (!hasP2pValidateName || app.pref.getBoolean(KEY_SAFE_MODE, true))
+        val safeMode get() = false
         var lastMac: String?
             get() = app.pref.getString(KEY_LAST_MAC, null)
             set(value) = app.pref.edit { putString(KEY_LAST_MAC, value) }
