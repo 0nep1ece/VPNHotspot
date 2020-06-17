@@ -168,7 +168,7 @@ class RepeaterService : Service(), CoroutineScope, WifiP2pManager.ChannelListene
                 if (!addr.isNullOrEmpty() && (Build.VERSION.SDK_INT < 29 ||
                                 MacAddressCompat.fromString(addr) != MacAddressCompat.ANY_ADDRESS)) lastMac = addr
             }
-            WifiP2pManagerHelper.ACTION_WIFI_P2P_PERSISTENT_GROUPS_CHANGED -> if (!safeMode) onPersistentGroupsChanged()
+            WifiP2pManagerHelper.ACTION_WIFI_P2P_PERSISTENT_GROUPS_CHANGED -> onPersistentGroupsChanged()
         }
     }
     /**
@@ -256,6 +256,7 @@ class RepeaterService : Service(), CoroutineScope, WifiP2pManager.ChannelListene
         val channel = channel ?: return@launch
         try {
             p2pManager.requestPersistentGroupInfo(channel) { groups ->
+                SmartSnackbar.make("persistent group count: ${groups.size}").show()
                 if (groups.isNotEmpty()) persistentSupported = true
                 val ownedGroups = groups.filter {
                     if (!it.isGroupOwner) return@filter false
